@@ -24,10 +24,7 @@ public class Controller {
         }
 
     }
-    void quantityNegative(String ISBN,int oldQuantity, int newQuantity ) {
-        System.out.println("can't update quantity for book "+ISBN+" New = "+newQuantity+" is negative so");
-        System.out.println("it remains as Old = "+oldQuantity);
-    }
+
 
     public String[][] search(String relation, String searchAttr, String searchVal) {
         String[][] result = null;
@@ -37,13 +34,18 @@ public class Controller {
             Class.forName(myDriver);
             Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
             Statement st = con.createStatement();
-            String sqlCommand ="SELECT * FROM book_store."+relation+" where "+searchAttr+" = \""+searchVal+"\";";
+            String sqlCommand=null;
+            if(searchAttr=="null"){
+                sqlCommand = "SELECT * FROM book_store." + relation +";";
+            }else {
+                sqlCommand = "SELECT * FROM book_store." + relation + " where " + searchAttr + " = \"" + searchVal + "\";";
+            }
             ResultSet rs = st.executeQuery(sqlCommand);
             int columnsNumber = rs.getMetaData().getColumnCount();
             rs.last();
             int rowsNum = rs.getRow();
             rs.beforeFirst();
-            System.out.println(columnsNumber+"  "+rowsNum);
+            //System.out.println(columnsNumber+"  "+rowsNum);
             result = new String[rowsNum][columnsNumber];
             int i=0;
             while (rs.next()) {
@@ -58,13 +60,13 @@ public class Controller {
             ex.printStackTrace();
 
         }
-        for(int i=0;i<result.length;i++) {
-            for(int j=0;j<result[0].length;j++) {
-                System.out.print(result[i][j]+"  ");
-
-            }
-            System.out.println();
-        }
+//        for(int i=0;i<result.length;i++) {
+//            for(int j=0;j<result[0].length;j++) {
+//                System.out.print(result[i][j]+"  ");
+//
+//            }
+//            System.out.println();
+//        }
         return result;
     }
 

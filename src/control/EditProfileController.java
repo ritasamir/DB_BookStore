@@ -45,8 +45,8 @@ public class EditProfileController {
         oldUserInfo = user.getUserInfo();
 
     }
-
-    public void initialize() {
+    @FXML
+    private void initialize() {
          userNameField.setText(oldUserInfo[0]);
          emailField.setText(oldUserInfo[2]);
          firstNameField.setText(oldUserInfo[3]);
