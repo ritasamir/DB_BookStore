@@ -32,7 +32,7 @@ public class loginController {
     private Button btnRegister;
 
     public loginController() {
-        user= new User();
+        user = User.getInstance();
     }
 
     public void register(ActionEvent event)throws Exception{
@@ -49,6 +49,7 @@ public class loginController {
         if(user.logIn(userName,password)){
             lblStatus.setTextFill(Color.GREEN);
             lblStatus.setText("Login Successful..Redirecting..");
+            user.userName=userName;
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             stage.close();

@@ -16,4 +16,13 @@ public class UserViewController {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void editProfile(ActionEvent event)throws Exception{
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/editProfile.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
 }
