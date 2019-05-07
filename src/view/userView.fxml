@@ -22,7 +22,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="254.0" layoutY="27.0" mnemonicParsing="false" text="Cart">
+      <Button layoutX="254.0" layoutY="27.0" mnemonicParsing="false" onAction="#viewCart" text="Cart">
          <font>
             <Font size="18.0" />
          </font>
@@ -40,12 +40,12 @@
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
            </columnResizePolicy>
        </TableView>
-       <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="97.0" prefWidth="359.0" spacing="5.0">
+       <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="78.0" prefHeight="63.0" prefWidth="331.0" spacing="5.0">
            <children>
                <Label text="Search Table:" />
                <TextField fx:id="searchField" prefHeight="25.0" prefWidth="229.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
-                  <Insets bottom="100.0" top="100.0" />
+                  <Insets />
                </HBox.margin></TextField>
            </children>
        </HBox>

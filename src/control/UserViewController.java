@@ -1,14 +1,13 @@
 package control;
 
-import b.d.l.T;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,9 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Book;
+import model.Cart;
 import sample.Controller;
 import javafx.util.Callback;
-import model.ButtonCell;
+import model.CartBtnCell;
+
+import java.util.HashMap;
 
 public class UserViewController  {
     @FXML
@@ -75,7 +77,7 @@ public class UserViewController  {
 
                     @Override
                     public TableCell<Book, Boolean> call(TableColumn<Book, Boolean> p) {
-                        return new ButtonCell(bookTable);
+                        return new CartBtnCell(bookTable);
                     }
 
                 });
@@ -95,9 +97,17 @@ public class UserViewController  {
                 String lowerCaseFilter = newValue.toLowerCase();
 
                 if (book.bookTitle.get().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true; // Filter matches first name.
+                    return true;
                 } else if (book.category.get().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true; // Filter matches last name.
+                    return true;
+                } else if (book.ISBN.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                } else if(book.publisher.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                }else if(book.price.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                }else if(book.publicationYear.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
                 }
                 return false; // Does not match.
             });
@@ -114,12 +124,15 @@ public class UserViewController  {
         bookTable.setItems(sortedData);
     }
     public void logOut(ActionEvent event)throws Exception{
+        Cart cart = Cart.getInstance();
+        cart.setCartItems(new HashMap<Book, StringProperty>());
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
         stage.setScene(scene);
         stage.show();
+
     }
 
     public void editProfile(ActionEvent event)throws Exception{
@@ -127,6 +140,14 @@ public class UserViewController  {
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/editProfile.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void viewCart(ActionEvent event)throws Exception{
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/cart.fxml")));
         stage.setScene(scene);
         stage.show();
     }

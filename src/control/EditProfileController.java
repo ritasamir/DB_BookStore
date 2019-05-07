@@ -37,11 +37,16 @@ public class EditProfileController {
     private TextField phoneField;
 
     @FXML
+    private PasswordField oldPasswordField;
+    @FXML
+    private PasswordField newPasswordField;
+
+    @FXML
     private Button btnConfirm;
     String[] oldUserInfo ;
     public EditProfileController() {
         user = User.getInstance();
-        userInfo = new String[6];
+        userInfo = new String[7];
         oldUserInfo = user.getUserInfo();
 
     }
@@ -57,9 +62,11 @@ public class EditProfileController {
 
     public void confirm(ActionEvent event)throws Exception{
         if(!validate()){
+            System.out.println(userInfo[6]);
             return;
         }else {
             //TODO check if new user's info is already exist for other user
+
             if(user.updateProfile(userInfo)){
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
@@ -110,6 +117,20 @@ public class EditProfileController {
             return false;
         }else{
             userInfo[5]=shippingAddressField.getText();
+        }
+
+        if(!oldPasswordField.getText().equals("")
+                || !newPasswordField.getText().equals("")){
+            System.out.println("m"+oldPasswordField.getText()+"m");
+            if(oldPasswordField.getText().equals(oldUserInfo[1])&&!newPasswordField.getText().equals("")){
+                userInfo[6]=newPasswordField.getText();
+            }else{
+                lblStatus.setText("Please enter your correct password");
+                userInfo[6]=oldUserInfo[1];
+                return false;
+            }
+        }else{
+            userInfo[6]=oldUserInfo[1];
         }
 
         return true;

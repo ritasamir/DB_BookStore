@@ -94,7 +94,7 @@ public class User {
             Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
             Statement statement = con.createStatement();
             String sqlString="UPDATE book_store.User set username='"+userInfo[0]+"' ,first_name= '"+userInfo[1]+"' ,last_name= '"+userInfo[2]+
-                    "' ,email= '"+userInfo[3]+"' ,phone= '"+userInfo[4]+"' ,address= '"+userInfo[5]+"' where username='"+userName+"';";
+                    "' ,email= '"+userInfo[3]+"' ,phone= '"+userInfo[4]+"' ,address= '"+userInfo[5]+"',password= '"+userInfo[6]+"' where username='"+userName+"';";
             statement.executeUpdate(sqlString);
             statement.close();
             con.close();

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class Controller {
-    private void SellBook(String iSBN, int newQuantity) {
+    public void sellBook(String iSBN, int newQuantity) {
         try {
             String myDriver = "com.mysql.jdbc.Driver";
             String myUrl = "jdbc:mysql://localhost/book_store";

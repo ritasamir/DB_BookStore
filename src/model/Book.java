@@ -1,6 +1,5 @@
 package model;
 
-import b.j.B;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
