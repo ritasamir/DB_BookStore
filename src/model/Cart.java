@@ -71,4 +71,25 @@ public class Cart {
         }
 
     }
+    public HashMap<Book, StringProperty> compact(HashMap<Book, StringProperty> items){
+        HashMap<Book, StringProperty> comp = new HashMap<Book, StringProperty>();
+        for (Map.Entry<Book, StringProperty> entry : items.entrySet()) {
+            Map.Entry<Book, StringProperty> en =contain(entry,comp);
+            if(en != null){
+                comp.replace(en.getKey(),comp.get(en.getKey()),new SimpleStringProperty(Integer.toString(Integer.parseInt(comp.get(en.getKey()).get())+
+                        Integer.parseInt(entry.getValue().get()))));
+            }else{
+                comp.put(entry.getKey(),entry.getValue());
+            }
+        }
+        return comp;
+    }
+    private Map.Entry<Book, StringProperty> contain(Map.Entry<Book, StringProperty> entry,HashMap<Book, StringProperty> comp){
+        for (Map.Entry<Book, StringProperty> en : comp.entrySet()){
+            if(en.getKey().getISBN().equals(entry.getKey().getISBN())){
+                return en;
+            }
+        }
+        return null;
+    }
 }

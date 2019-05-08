@@ -50,15 +50,13 @@ public class CartController {
     Label error;
     private ObservableList<Pair<Book,StringProperty>> masterData;
     Cart cart;
-    HashMap<Book, StringProperty> cartItems;
     Controller control;
 
     public CartController(){
         control= new Controller();
         cart=Cart.getInstance();
-        cartItems=cart.getCartItems();
 
-        masterData = getMasterData(cartItems);
+        masterData = getMasterData(cart.getCartItems());
 
 
     }
@@ -107,7 +105,7 @@ public class CartController {
         cartTable.getColumns().add(col_action);
         cartTable.setItems(masterData);
        lblTotalPrice.setText(cart.getTotalPrice());
-        if(cartItems.isEmpty()){
+        if(cart.getCartItems().isEmpty()){
             checkOutBtn.setDisable(true);
         }else{
             checkOutBtn.setDisable(false);
@@ -120,19 +118,17 @@ public class CartController {
     }
     public void checkOut(ActionEvent event){
        if(getCreditCardInfo()){
-           Set set = cartItems.entrySet();
-           Iterator iterator = set.iterator();
-           while (iterator.hasNext()) {
-               Map.Entry mapEntry = (Map.Entry) iterator.next();
-               Book keyValue = (Book) mapEntry.getKey();
-               //TODO check for -ve values and inform the customer
-               StringProperty value = (StringProperty) mapEntry.getValue();
-               int newQuantity = Integer.parseInt(keyValue.getQuantity()) -Integer.parseInt(value.get());
-               control.sellBook(keyValue.getISBN(),newQuantity);
-               cart.setCartItems(new HashMap<Book,StringProperty>());
-               cartTable.setItems(getMasterData(cart.getCartItems()));
-               lblTotalPrice.setText(cart.getTotalPrice());
+           for (Map.Entry<Book, StringProperty> entry : Cart.getInstance().compact(Cart.getInstance().getCartItems()).entrySet()) {
+               int newQuantity = Integer.parseInt(entry.getKey().getQuantity()) -Integer.parseInt(entry.getValue().get());
+               control.sellBook(entry.getKey().getISBN(),newQuantity);
            }
+           cart.setCartItems(new HashMap<Book,StringProperty>());
+           cartTable.setItems(getMasterData(cart.getCartItems()));
+           checkOutBtn.setDisable(true);
+           lblTotalPrice.setText(cart.getTotalPrice());
+       }else{
+           Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Credit Card Information !", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+           alert.showAndWait();
        }
 
     }
@@ -208,7 +204,6 @@ public class CartController {
         grid.add(datePicker, 1, 1);
         grid.add(error,2,1);
         Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
-
         confirmButton.setDisable(true);
         creditNo.textProperty().addListener((observable, oldValue, newValue) -> {
             confirmButton.setDisable(newValue.trim().isEmpty());
@@ -217,10 +212,11 @@ public class CartController {
         confirmButton.disableProperty().bind(isInvalid);
         dialog.getDialogPane().setContent(grid);
         Optional<Pair<String, String>> result = dialog.showAndWait();
+
        if (result.isPresent()) {
-            System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
+           // System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
            User user= User.getInstance();
-          if(cart.insertCreditCard(user.userName,creditNo.getText(),datePicker.getValue().toString()))
+          if(datePicker.getValue() != null && cart.insertCreditCard(user.userName,creditNo.getText(),datePicker.getValue().toString()))
               return true;
        }
        return false;

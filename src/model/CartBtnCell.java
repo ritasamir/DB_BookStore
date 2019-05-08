@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.deploy.util.StringUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
