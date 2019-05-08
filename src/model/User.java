@@ -15,10 +15,7 @@ public class User {
     public String[]getUserInfo(){
         String[] userInfo = new String[8];
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = Connection.getInstance();
             Statement st = con.createStatement();
             String sqlCommand ="SELECT * FROM book_store.user where username = '"+userName+"';";
             ResultSet rs = st.executeQuery(sqlCommand);
@@ -30,7 +27,6 @@ public class User {
             }
             st.close();
             rs.close();
-            con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -40,16 +36,12 @@ public class User {
 
     public boolean addNewCustomer(String[] userInfo){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager. getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = Connection.getInstance();
             Statement statement = con.createStatement();
             String sqlString="INSERT INTO book_store.User VALUES ('"+userInfo[0]+"' , '"+userInfo[1]+"' , '"+userInfo[2]+
                     "' , '"+userInfo[3]+"' , '"+userInfo[4]+"' , '"+userInfo[5]+"' , '"+userInfo[6]+ "' , FALSE );";
             statement.executeUpdate(sqlString);
             statement.close();
-            con.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -59,10 +51,7 @@ public class User {
 
     public boolean logIn(String userName,String password) {
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = Connection.getInstance();
             Statement statement = con.createStatement();
             String sql = "SELECT * FROM user Where username = ? and password = ?";
             PreparedStatement  preparedStatement = con.prepareStatement(sql);
@@ -88,16 +77,12 @@ public class User {
 
     public boolean updateProfile(String[] userInfo) {
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = Connection.getInstance();
             Statement statement = con.createStatement();
             String sqlString="UPDATE book_store.User set username='"+userInfo[0]+"' ,first_name= '"+userInfo[1]+"' ,last_name= '"+userInfo[2]+
                     "' ,email= '"+userInfo[3]+"' ,phone= '"+userInfo[4]+"' ,address= '"+userInfo[5]+"',password= '"+userInfo[6]+"' where username='"+userName+"';";
             statement.executeUpdate(sqlString);
             statement.close();
-            con.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

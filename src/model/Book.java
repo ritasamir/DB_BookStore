@@ -13,14 +13,7 @@ public class Book {
     private final SimpleStringProperty quantity = new SimpleStringProperty();
     private final SimpleStringProperty minimumQuantity = new SimpleStringProperty();
     private final SimpleStringProperty category = new SimpleStringProperty();
-//    public StringProperty  ISBN;
-//    public StringProperty bookTitle;
-//    public StringProperty category;
-//    public StringProperty price;
-//    public StringProperty publisher;
-//    public StringProperty threshold;
-//    public StringProperty numberOfCopies;
-//    public StringProperty publicationYear;
+
     public Button add_to_cart;
 
     public Book(String[] book_Info){
@@ -34,18 +27,7 @@ public class Book {
         minimumQuantity.set(book_Info[7]);
         this.add_to_cart= new Button("+");
     }
-//    public Book(String ISBN, String bookTitle, String publisher, String publicationYear, String price,
-//                String category, String numberOfCopies, String threshold) {
-//        this.ISBN=new SimpleStringProperty(ISBN);
-//        this.bookTitle=new SimpleStringProperty(bookTitle);
-//        this.category=new SimpleStringProperty(category);
-//        this.publisher=new SimpleStringProperty(publisher);
-//        this.price=new SimpleStringProperty(price);
-//        this.publicationYear=new SimpleStringProperty(publicationYear);
-//        this.threshold=new SimpleStringProperty(threshold);
-//        this.numberOfCopies=new SimpleStringProperty(numberOfCopies);
-//        this.add_to_cart= new Button("+");
-//    }
+
 public String getPublisher() {
     return publisher.get();
 }

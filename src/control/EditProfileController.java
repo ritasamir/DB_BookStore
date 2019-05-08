@@ -2,14 +2,10 @@ package control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import model.State;
 import model.User;
 
@@ -67,7 +63,6 @@ public class EditProfileController {
             return;
         }else {
             //TODO check if new user's info is already exist for other user
-
             if(user.updateProfile(userInfo)){
                 State state = new State();
                 state.doAction(Integer.parseInt(user.getUserInfo()[7]),event);
@@ -118,7 +113,7 @@ public class EditProfileController {
 
         if(!oldPasswordField.getText().equals("")
                 || !newPasswordField.getText().equals("")){
-            System.out.println("m"+oldPasswordField.getText()+"m");
+           // System.out.println("m"+oldPasswordField.getText()+"m");
             if(oldPasswordField.getText().equals(oldUserInfo[1])&&!newPasswordField.getText().equals("")){
                 userInfo[6]=newPasswordField.getText();
             }else{

@@ -8,16 +8,12 @@ import java.sql.Statement;
 public class Controller {
     public void sellBook(String iSBN, int newQuantity) {
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = model.Connection.getInstance();
             Statement st = con.createStatement();
             String sqlCommand ="UPDATE book SET Number_Of_Copies = "+newQuantity+" WHERE ISBN = \""+iSBN+"\";";
             PreparedStatement pstmt = con.prepareStatement(sqlCommand);
             pstmt.executeUpdate();
             st.close();
-            con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -29,10 +25,7 @@ public class Controller {
     public String[][] search(String relation, String searchAttr, String searchVal) {
         String[][] result = null;
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = model.Connection.getInstance();
             Statement st = con.createStatement();
             String sqlCommand=null;
             if(searchAttr=="null"){
@@ -55,7 +48,6 @@ public class Controller {
             }
             st.close();
             rs.close();
-            con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
 

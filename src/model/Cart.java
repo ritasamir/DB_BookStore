@@ -51,10 +51,7 @@ public class Cart {
 
     public boolean insertCreditCard(String username,String cardNo,String date){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection con = model.Connection.getInstance();
             Statement statement = con.createStatement();
             String sqlString="INSERT INTO book_store.credit_card " +
                     "SELECT * FROM (SELECT '"+username+"','"+cardNo+"','"+date+"') AS tmp " +
@@ -63,7 +60,6 @@ public class Cart {
             System.out.println(sqlString);
             statement.executeUpdate(sqlString);
             statement.close();
-            con.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

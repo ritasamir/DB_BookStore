@@ -13,10 +13,7 @@ import java.util.Date;
 public class Manager {
     public static String addBooks(String[] bookInfo,Set<String> authorsNames) {
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             String query = "insert into book_store." + "book" + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             // create the mysql insert preparedstatement
@@ -32,7 +29,6 @@ public class Manager {
 
             // execute the preparedstatement
             preparedStmt.execute();
-            conn.close();
             String authorStatus = addAuthors(bookInfo[0],authorsNames);
             if(authorStatus != "Authors added successfully"){
                 return "Book added successfully but " + authorStatus;
@@ -47,10 +43,7 @@ public class Manager {
 
   public static String addPublisher(String[] publisherInfo){
       try {
-          String myDriver = "com.mysql.jdbc.Driver";
-          String myUrl = "jdbc:mysql://localhost/book_store";
-          Class.forName(myDriver);
-          Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+          java.sql.Connection conn = Connection.getInstance();
           String query = "insert into book_store." + "publisher" + " values (?, ?, ?)";
 
           // create the mysql insert preparedstatement
@@ -62,7 +55,6 @@ public class Manager {
           // execute the preparedstatement
           preparedStmt.execute();
 
-          conn.close();
           return "Publisher added successfully";
       } catch (Exception e) {
           String error = e.getMessage();
@@ -71,10 +63,7 @@ public class Manager {
   }
     public static String addOrder(String[] orderInfo){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             String query = "insert into book_store." + "book_order(ISBN,quantity,timestamp)" + " values (?, ?, ?)";
             // create the mysql insert preparedstatement
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -86,7 +75,6 @@ public class Manager {
             preparedStmt.setString(3,ts.toString()); //phone
             // execute the preparedstatement
             preparedStmt.execute();
-            conn.close();
             return "Order added successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -95,10 +83,7 @@ public class Manager {
     }
     public static String addAuthors(String ISBN,Set<String> authorsNames){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
 
                 for (String author: authorsNames) {
                     String query = "insert into book_store." + "author" + " values (?, ?)";
@@ -111,7 +96,6 @@ public class Manager {
                 }
 
 
-            conn.close();
             return "Authors added successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -121,10 +105,7 @@ public class Manager {
 
     public static ObservableList<Book> getBooks(){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             ObservableList<Book> books = FXCollections.observableArrayList();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("Select * from book");
@@ -140,7 +121,6 @@ public class Manager {
                 /*int minimumQuantity*/ book_info[7] = rs.getString("Threshold");
                 books.add(new Book(book_info));
             }
-            conn.close();
             return books;
         } catch (Exception e) {
             String error = e.getMessage();
@@ -150,10 +130,7 @@ public class Manager {
 
     public static ObservableList<Publisher> getPublishers(){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             ObservableList<Publisher> publishers = FXCollections.observableArrayList();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("Select * from publisher");
@@ -163,7 +140,6 @@ public class Manager {
                 String phone = rs.getString("phone");
                 publishers.add(new Publisher(name,address,phone));
             }
-            conn.close();
             return publishers;
         } catch (Exception e) {
             String error = e.getMessage();
@@ -173,10 +149,7 @@ public class Manager {
 
     public static ObservableList<Author> getAuthors(){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             ObservableList<Author> authors = FXCollections.observableArrayList();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("Select * from Author");
@@ -185,7 +158,6 @@ public class Manager {
                 String name=  rs.getString("author_name");
                 authors.add(new Author(ISBN,name));
             }
-            conn.close();
             return authors;
         } catch (Exception e) {
             String error = e.getMessage();
@@ -195,10 +167,7 @@ public class Manager {
 
     public static ObservableList<Order> getOrders(){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             ObservableList<Order> orders = FXCollections.observableArrayList();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("Select * from book_order");
@@ -209,7 +178,6 @@ public class Manager {
                 String timestamp = rs.getString("timestamp");
                 orders.add(new Order(id,ISBN,quantity,timestamp));
             }
-            conn.close();
             return orders;
         } catch (Exception e) {
             String error = e.getMessage();
@@ -219,13 +187,10 @@ public class Manager {
 
     public static String deleteOrder(String order_id){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM book_Store.book_order WHERE order_id=" + order_id);
-            conn.close();
+
             return "Order deleted successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -235,13 +200,9 @@ public class Manager {
 
     public static String deleteAuthor(String ISBN,String name){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM book_Store.author WHERE ISBN=" + ISBN + " AND author_name =\"" + name +"\"");
-            conn.close();
             return "Author deleted successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -250,13 +211,9 @@ public class Manager {
     }
     public static String deletePublisher(String name){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM book_Store.publisher WHERE name =\"" + name +"\"");
-            conn.close();
             return "Publisher deleted successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -265,17 +222,13 @@ public class Manager {
     }
     public static String updateBooks(String ISBN,String[] book_info){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("update book set ISBN = \""+book_info[0]+
                     "\", Title = \""+ book_info[1]+"\" , Publisher = \""+ book_info[2]
                     +"\" , Publication_year = \""+ book_info[3]
                     +"\", price = \""+book_info[4]+"\", Category = \""+book_info[5]+
                     "\", Number_Of_Copies = "+book_info[6]+", Threshold = "+book_info[7] +" where ISBN = \""+ISBN+"\"");
-            conn.close();
             return "Book updated successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -285,15 +238,11 @@ public class Manager {
 
     public static String updatePublisher(String name,String[] publisher_info){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("update publisher set Name = \""+publisher_info[0]+
                     "\", address = \""+ publisher_info[1]+"\", Phone = \""+ publisher_info[2]
                     +"\" where name = \""+name+"\"");
-            conn.close();
             return "Publisher updated successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -302,13 +251,9 @@ public class Manager {
     }
     public static String deleteUser(String userName){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM book_Store.user WHERE username=\"" + userName +"\"");
-            conn.close();
             return "User deleted successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -318,13 +263,9 @@ public class Manager {
 
     public static String deleteBook(String ISBN){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM book_Store.book WHERE ISBN=\"" + ISBN +"\"");
-            conn.close();
             return "Book deleted successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -334,13 +275,9 @@ public class Manager {
 
     public static String changeToManager(String userName){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             Statement st = conn.createStatement();
             st.executeUpdate("UPDATE user SET is_manager = 1 WHERE username = \"" + userName +"\"");
-            conn.close();
             return "customer updated successfully";
         } catch (Exception e) {
             String error = e.getMessage();
@@ -349,10 +286,7 @@ public class Manager {
     }
     public static ObservableList<ObservableList<Users>> getUsers(){
         try {
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://localhost/book_store";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            java.sql.Connection conn = Connection.getInstance();
             ObservableList<Users> customers = FXCollections.observableArrayList();
             ObservableList<Users> managers = FXCollections.observableArrayList();
             Statement st = conn.createStatement();
@@ -373,7 +307,6 @@ public class Manager {
                     managers.add(new Users(user_Info));
                 }
             }
-            conn.close();
             ObservableList<ObservableList<Users>> users = FXCollections.observableArrayList();
             users.add(customers);
             users.add(managers);
