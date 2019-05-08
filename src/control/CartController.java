@@ -25,10 +25,13 @@ import javafx.util.Callback;
 import kotlin.Pair;
 import model.Book;
 import model.Cart;
+import model.User;
 import org.apache.commons.lang.StringUtils;
 import sample.Controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -50,6 +53,7 @@ public class CartController {
     private Button checkOutBtn;
     @FXML
     private Label lblTotalPrice;
+    Label error;
     private ObservableList<Pair<Book,StringProperty>> masterData;
     Cart cart;
     HashMap<Book, StringProperty> cartItems;
@@ -124,7 +128,28 @@ public class CartController {
         stage.show();
     }
     public void checkOut(ActionEvent event){
+       if(getCreditCardInfo()){
+           Set set = cartItems.entrySet();
+           Iterator iterator = set.iterator();
+           while (iterator.hasNext()) {
+               Map.Entry mapEntry = (Map.Entry) iterator.next();
+               Book keyValue = (Book) mapEntry.getKey();
+               //TODO check for -ve values and inform the customer
+               StringProperty value = (StringProperty) mapEntry.getValue();
+               int newQuantity = Integer.parseInt(keyValue.numberOfCopies.get()) -Integer.parseInt(value.get());
+               control.sellBook(keyValue.ISBN.get(),newQuantity);
+               cart.setCartItems(new HashMap<Book,StringProperty>());
+               cartTable.setItems(getMasterData(cart.getCartItems()));
+               lblTotalPrice.setText(cart.getTotalPrice());
+           }
+       }
 
+    }
+    private boolean isInvalid(String text) {
+       return StringUtils.isNumeric(text) && text.length() != 16;
+    }
+
+    private boolean getCreditCardInfo() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Credit Card Dialog");
         dialog.setHeaderText("Enter Your Credit Card Information");
@@ -145,6 +170,13 @@ public class CartController {
             public void handle(ActionEvent event)
             {
                 LocalDate date = datePicker.getValue();
+                Date currdate = new Date();
+                if (datePicker.getEditor()!=null&&currdate.after(java.sql.Date.valueOf(date))) {
+                    System.out.println("invalid date");
+                    error.setText("Invalid Date");
+                }else{
+                    error.setText("");
+                }
             }
         });
         datePicker.setPromptText(pattern.toLowerCase());
@@ -157,10 +189,7 @@ public class CartController {
                     @Override
                     public void updateItem(LocalDate item, boolean empty)
                     {
-                        // Must call super
                         super.updateItem(item, empty);
-
-                        // Show Weekends in blue color
                         DayOfWeek day = DayOfWeek.from(item);
                         if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)
                         {
@@ -173,11 +202,16 @@ public class CartController {
 
         datePicker.setDayCellFactory(dayCellFactory);
         Label selection = new Label("Expiry Date:");
+        error = new Label("");
+        error.setPrefSize(100,50);
+        error.setTextFill(Color.RED);
         grid.add(new Label("Credit Card Number:"), 0, 0);
         grid.add(creditNo, 1, 0);
         grid.add(selection, 0, 1);
         grid.add(datePicker, 1, 1);
+        grid.add(error,2,1);
         Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
+
         confirmButton.setDisable(true);
         creditNo.textProperty().addListener((observable, oldValue, newValue) -> {
             confirmButton.setDisable(newValue.trim().isEmpty());
@@ -186,25 +220,13 @@ public class CartController {
         confirmButton.disableProperty().bind(isInvalid);
         dialog.getDialogPane().setContent(grid);
         Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        if (result.isPresent()){
-            System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date="+datePicker.getValue() );
-        }
-
-//        Set set = cartItems.entrySet();
-//        Iterator iterator = set.iterator();
-//        while (iterator.hasNext()) {
-//            Map.Entry mapEntry = (Map.Entry) iterator.next();
-//            Book keyValue = (Book) mapEntry.getKey();
-//            //TODO check for -ve values and inform the customer
-//            StringProperty value = (StringProperty) mapEntry.getValue();
-//            int newQuantity = Integer.parseInt(keyValue.numberOfCopies.get()) -Integer.parseInt(value.get());
-//            control.sellBook(keyValue.ISBN.get(),newQuantity);
-//        }
-
-    }
-    private boolean isInvalid(String text) {
-        return StringUtils.isNumeric(text)&&text.length()!=16;
+       if (result.isPresent()) {
+            System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
+           User user= User.getInstance();
+          if(cart.insertCreditCard(user.userName,creditNo.getText(),datePicker.getValue().toString()))
+              return true;
+       }
+       return false;
     }
 }
  class removeFCartBtn extends TableCell<Pair<Book,StringProperty>, Boolean>  {

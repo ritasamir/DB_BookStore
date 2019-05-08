@@ -4,6 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import kotlin.Pair;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,5 +48,28 @@ public class Cart {
             total+=Float.valueOf(keyValue.price.get()).floatValue()*Integer.parseInt(value.get());
         }
         return Float.toString(total);
+    }
+
+    public boolean insertCreditCard(String username,String cardNo,String date){
+        try {
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://localhost/book_store";
+            Class.forName(myDriver);
+            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            Statement statement = con.createStatement();
+            String sqlString="INSERT INTO book_store.credit_card " +
+                    "SELECT * FROM (SELECT '"+username+"','"+cardNo+"','"+date+"') AS tmp " +
+                    "WHERE NOT EXISTS ( SELECT * FROM book_store.credit_card WHERE username = '"+username+"' and cardNo='"
+            +cardNo+"');";
+            System.out.println(sqlString);
+            statement.executeUpdate(sqlString);
+            statement.close();
+            con.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
     }
 }
