@@ -2,7 +2,6 @@ package model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import kotlin.Pair;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,7 +44,7 @@ public class Cart {
             Map.Entry mapEntry = (Map.Entry) iterator.next();
             Book keyValue = (Book) mapEntry.getKey();
             StringProperty value = (StringProperty) mapEntry.getValue();
-            total+=Float.valueOf(keyValue.price.get()).floatValue()*Integer.parseInt(value.get());
+            total+=Float.valueOf(keyValue.getPrice()).floatValue()*Integer.parseInt(value.get());
         }
         return Float.toString(total);
     }
@@ -60,7 +59,7 @@ public class Cart {
             String sqlString="INSERT INTO book_store.credit_card " +
                     "SELECT * FROM (SELECT '"+username+"','"+cardNo+"','"+date+"') AS tmp " +
                     "WHERE NOT EXISTS ( SELECT * FROM book_store.credit_card WHERE username = '"+username+"' and cardNo='"
-            +cardNo+"');";
+            +cardNo+"' and expiry_date = '"+date+"');";
             System.out.println(sqlString);
             statement.executeUpdate(sqlString);
             statement.close();

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="263.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.AddOrdersController">
+    <children>
+        <TextField fx:id="ISBN" layoutX="154.0" layoutY="68.0" />
+        <TextField fx:id="quantity" layoutX="154.0" layoutY="120.0" />
+        <Label layoutX="56.0" layoutY="73.0" text="ISBN" />
+        <Label layoutX="48.0" layoutY="125.0" text="Quantity" />
+        <Button layoutX="248.0" layoutY="193.0" mnemonicParsing="false" onAction="#submit" text="Add Order" />
+        <Button layoutX="24.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="Back" />
+    </children>
+</AnchorPane>

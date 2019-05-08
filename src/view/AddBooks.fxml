@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="529.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.AddBooksController">
+   <children>
+
+
+      <TextField fx:id="ISBN" layoutX="229.0" layoutY="40.0" />
+      <TextField fx:id="bookTitle" layoutX="229.0" layoutY="75.0" />
+      <TextField fx:id="publisherName" layoutX="229.0" layoutY="112.0" />
+      <TextField fx:id="publicationYear" layoutX="229.0" layoutY="149.0" />
+      <Label layoutX="106.0" layoutY="45.0" text="ISBN" />
+      <Label layoutX="108.0" layoutY="80.0" text="Title" />
+      <Label layoutX="71.0" layoutY="117.0" text="Publisher Name" />
+      <Label layoutX="70.0" layoutY="154.0" text="Publication year" />
+      <Label layoutX="49.0" layoutY="326.0" text="Price" />
+      <TextField fx:id="price" layoutX="97.0" layoutY="321.0" prefHeight="31.0" prefWidth="96.0" />
+      <TextField fx:id="numberOFCopies" layoutX="231.0" layoutY="365.0" />
+      <TextField fx:id="threshold" layoutX="231.0" layoutY="405.0" />
+      <Label layoutX="64.0" layoutY="370.0" text="Number of copies" />
+      <Label layoutX="30.0" layoutY="410.0" text="Minimum number of copies" />
+      <MenuButton fx:id="category" layoutX="231.0" layoutY="321.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="184.0" text="Category">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#art" text="Art" />
+          <MenuItem mnemonicParsing="false" onAction="#science" text="Science" />
+          <MenuItem mnemonicParsing="false" onAction="#religion" text="Religion" />
+          <MenuItem mnemonicParsing="false" onAction="#history" text="History" />
+          <MenuItem mnemonicParsing="false" onAction="#geography" text="Geography" />
+        </items>
+      </MenuButton>
+      <Button layoutX="330.0" layoutY="459.0" mnemonicParsing="false" onAction="#submit" text="Add Book" />
+      <Label layoutX="91.0" layoutY="195.0" text="Authors" />
+      <TextField fx:id="authorName" layoutX="229.0" layoutY="190.0" prefHeight="31.0" prefWidth="144.0" />
+      <Button layoutX="385.0" layoutY="190.0" mnemonicParsing="false" onAction="#addAuthor" text="+" />
+      <ListView fx:id="listview" layoutX="229.0" layoutY="238.0" prefHeight="63.0" prefWidth="187.0" />
+      <Button layoutX="99.0" layoutY="258.0" mnemonicParsing="false" onAction="#deleteAuthor" text="Remove Author">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button layoutX="17.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="Back" />
+
+   </children>
+</AnchorPane>

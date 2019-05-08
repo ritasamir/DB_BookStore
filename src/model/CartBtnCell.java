@@ -1,11 +1,11 @@
 package model;
 
+import com.sun.deploy.util.StringUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
 
@@ -44,8 +44,14 @@ public class CartBtnCell extends TableCell<Book, Boolean> {
         return null;
     }
 
-    private boolean isInvalid(String text) {
-       return StringUtils.isNumeric(text);
+    private boolean isInvalid(String text)
+    {
+        try {
+            double d = Double.parseDouble(text);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return true;
+        }
+        return false;
     }
 
 

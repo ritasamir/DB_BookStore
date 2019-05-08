@@ -17,21 +17,15 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import kotlin.Pair;
+import javafx.util.Pair;
 import model.Book;
 import model.Cart;
+import model.State;
 import model.User;
-import org.apache.commons.lang.StringUtils;
 import sample.Controller;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -84,11 +78,11 @@ public class CartController {
     @FXML
     public void initialize() {
         // 0. Initialize the columns.
-        ISBNColumn.setCellValueFactory(cellData -> cellData.getValue().getFirst().ISBN);
-        titleColumn.setCellValueFactory(cellData -> cellData.getValue().getFirst().bookTitle);
-        quantityColumn.setCellValueFactory(cellData -> cellData.getValue().getSecond());
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getFirst().category);
-        priceColumn.setCellValueFactory(cellData -> cellData.getValue().getFirst().price);
+        ISBNColumn.setCellValueFactory(cellData -> cellData.getValue().getKey().ISBNProperty());
+        titleColumn.setCellValueFactory(cellData -> cellData.getValue().getKey().titleProperty());
+        quantityColumn.setCellValueFactory(cellData -> cellData.getValue().getValue());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getKey().categoryProperty());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().getKey().priceProperty());
         TableColumn col_action = new TableColumn<>("Action");
         col_action.setSortable(false);
         col_action.setCellValueFactory(
@@ -120,12 +114,9 @@ public class CartController {
         }
     }
     public void back(ActionEvent event)throws Exception{
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/userView.fxml")));
-        stage.setScene(scene);
-        stage.show();
+        State state = new State();
+        User user = User.getInstance();
+        state.doAction(Integer.parseInt(user.getUserInfo()[7]),event);
     }
     public void checkOut(ActionEvent event){
        if(getCreditCardInfo()){
@@ -136,8 +127,8 @@ public class CartController {
                Book keyValue = (Book) mapEntry.getKey();
                //TODO check for -ve values and inform the customer
                StringProperty value = (StringProperty) mapEntry.getValue();
-               int newQuantity = Integer.parseInt(keyValue.numberOfCopies.get()) -Integer.parseInt(value.get());
-               control.sellBook(keyValue.ISBN.get(),newQuantity);
+               int newQuantity = Integer.parseInt(keyValue.getQuantity()) -Integer.parseInt(value.get());
+               control.sellBook(keyValue.getISBN(),newQuantity);
                cart.setCartItems(new HashMap<Book,StringProperty>());
                cartTable.setItems(getMasterData(cart.getCartItems()));
                lblTotalPrice.setText(cart.getTotalPrice());
@@ -145,8 +136,14 @@ public class CartController {
        }
 
     }
-    private boolean isInvalid(String text) {
-       return StringUtils.isNumeric(text) && text.length() != 16;
+    private boolean isInvalid(String text)
+    {
+        try {
+            double d = Double.parseDouble(text);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return true;
+        }
+        return text.length() != 16;
     }
 
     private boolean getCreditCardInfo() {
@@ -242,15 +239,15 @@ public class CartController {
             public void handle(ActionEvent t){
                 int selectdIndex = getTableRow().getIndex();
                 Pair<Book,StringProperty> selectedItem = (Pair<Book,StringProperty>)tblView.getItems().get(selectdIndex);
-                String quantity= cartItems.get(selectedItem.getFirst()).get();
+                String quantity= cartItems.get(selectedItem.getKey()).get();
                 String newQuantity = Integer.toString(Integer.parseInt(quantity)-1);
                 if(Integer.parseInt(quantity)-1==0){
-                    cartItems.remove(selectedItem.getFirst(),selectedItem.getSecond());
+                    cartItems.remove(selectedItem.getKey(),selectedItem.getValue());
                     if(cartItems.isEmpty()){
                        checkOut.setDisable(true);
                     }
                 }else {
-                    cartItems.replace(selectedItem.getFirst(), selectedItem.getSecond(), new SimpleStringProperty(newQuantity));
+                    cartItems.replace(selectedItem.getKey(), selectedItem.getValue(), new SimpleStringProperty(newQuantity));
                 }
         System.out.println(cartItems);
                 cart.setCartItems(cartItems);
@@ -260,9 +257,15 @@ public class CartController {
         });
     }
 
-    private boolean isInvalid(String text) {
-        return StringUtils.isNumeric(text);
-    }
+     private boolean isInvalid(String text)
+     {
+         try {
+             double d = Double.parseDouble(text);
+         } catch (NumberFormatException | NullPointerException nfe) {
+             return true;
+         }
+         return false;
+     }
 
 
     //Display button if the row is not empty

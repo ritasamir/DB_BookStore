@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.State;
 import model.User;
 
 public class loginController {
@@ -50,12 +51,9 @@ public class loginController {
             lblStatus.setTextFill(Color.GREEN);
             lblStatus.setText("Login Successful..Redirecting..");
             user.userName=userName;
-            Node node = (Node) event.getSource();
-            Stage stage = (Stage) node.getScene().getWindow();
-            stage.close();
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/userView.fxml")));
-            stage.setScene(scene);
-            stage.show();
+            String[] userInfo = user.getUserInfo();
+            State state = new State();
+            state.doAction(Integer.parseInt(userInfo[7]),event);
         }else{
             lblStatus.setText("Enter Correct UserName/Password");
         }

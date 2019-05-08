@@ -11,13 +11,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 330, 330));
+        primaryStage.setTitle("Book Store");
+        primaryStage.setScene(new Scene(root, 500, 600));
         primaryStage.show();
         Controller control = new Controller();
-//        String searchAttr="Title";
-//        String searchVal="rita";
-//        String[][] result = control.search("book",searchAttr,searchVal);
     }
 
 

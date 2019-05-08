@@ -48,19 +48,20 @@ public class UserViewController  {
         control = new Controller();
         books=control.search("book","null","null");
         for(int i=0;i<books.length;i++){
-            masterData.add(new Book(books[i][0], books[i][1], books[i][2], books[i][3], books[i][4], books[i][5], books[i][6],
-                    books[i][7]));
+            String[] book = {books[i][0], books[i][1], books[i][2], books[i][3], books[i][4], books[i][5], books[i][6],
+                    books[i][7]};
+            masterData.add(new Book(book));
         }
     }
 
     @FXML
     private void initialize() {
         // 0. Initialize the columns.
-        ISBNColumn.setCellValueFactory(cellData -> cellData.getValue().ISBN);
-        titleColumn.setCellValueFactory(cellData -> cellData.getValue().bookTitle);
-        publisherColumn.setCellValueFactory(cellData -> cellData.getValue().publisher);
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().category);
-        priceColumn.setCellValueFactory(cellData -> cellData.getValue().price);
+        ISBNColumn.setCellValueFactory(cellData -> cellData.getValue().ISBNProperty());
+        titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+        publisherColumn.setCellValueFactory(cellData -> cellData.getValue().publisherProperty());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
         TableColumn col_action = new TableColumn<>("Action");
         col_action.setSortable(false);
         col_action.setCellValueFactory(
@@ -96,17 +97,17 @@ public class UserViewController  {
                 // Compare first name and last name of every person with filter text.
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (book.bookTitle.get().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (book.getTitle().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
-                } else if (book.category.get().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                } else if (book.getCategory().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
-                } else if (book.ISBN.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                } else if (book.getISBN().toLowerCase().indexOf(lowerCaseFilter) != -1){
                     return true;
-                } else if(book.publisher.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                } else if(book.getPublisher().toLowerCase().indexOf(lowerCaseFilter) != -1){
                     return true;
-                }else if(book.price.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                }else if(book.getPrice().toLowerCase().indexOf(lowerCaseFilter) != -1){
                     return true;
-                }else if(book.publicationYear.get().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                }else if(book.getPublicationYear().toLowerCase().indexOf(lowerCaseFilter) != -1){
                     return true;
                 }
                 return false; // Does not match.

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.State;
 import model.User;
 
 public class EditProfileController {
@@ -68,12 +69,8 @@ public class EditProfileController {
             //TODO check if new user's info is already exist for other user
 
             if(user.updateProfile(userInfo)){
-                Node node = (Node) event.getSource();
-                Stage stage = (Stage) node.getScene().getWindow();
-                stage.close();
-                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/userView.fxml")));
-                stage.setScene(scene);
-                stage.show();
+                State state = new State();
+                state.doAction(Integer.parseInt(user.getUserInfo()[7]),event);
             }else{
                 System.out.println("CANN'T INSERT THAT USER");
             }

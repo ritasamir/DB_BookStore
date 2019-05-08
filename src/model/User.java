@@ -43,7 +43,7 @@ public class User {
             String myDriver = "com.mysql.jdbc.Driver";
             String myUrl = "jdbc:mysql://localhost/book_store";
             Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "p@ssw0rD");
+            Connection con = DriverManager. getConnection(myUrl, "root", "p@ssw0rD");
             Statement statement = con.createStatement();
             String sqlString="INSERT INTO book_store.User VALUES ('"+userInfo[0]+"' , '"+userInfo[1]+"' , '"+userInfo[2]+
                     "' , '"+userInfo[3]+"' , '"+userInfo[4]+"' , '"+userInfo[5]+"' , '"+userInfo[6]+ "' , FALSE );";
