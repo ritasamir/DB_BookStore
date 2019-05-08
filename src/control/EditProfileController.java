@@ -64,6 +64,7 @@ public class EditProfileController {
         }else {
             //TODO check if new user's info is already exist for other user
             if(user.updateProfile(userInfo)){
+                user.userName=userInfo[0];
                 State state = new State();
                 state.doAction(Integer.parseInt(user.getUserInfo()[7]),event);
             }else{

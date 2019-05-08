@@ -18,6 +18,7 @@ public class User {
             java.sql.Connection con = Connection.getInstance();
             Statement st = con.createStatement();
             String sqlCommand ="SELECT * FROM book_store.user where username = '"+userName+"';";
+            System.out.println(sqlCommand);
             ResultSet rs = st.executeQuery(sqlCommand);
             while (rs.next()) {
                 for(int j=0;j<8;j++) {
@@ -81,6 +82,7 @@ public class User {
             Statement statement = con.createStatement();
             String sqlString="UPDATE book_store.User set username='"+userInfo[0]+"' ,first_name= '"+userInfo[1]+"' ,last_name= '"+userInfo[2]+
                     "' ,email= '"+userInfo[3]+"' ,phone= '"+userInfo[4]+"' ,address= '"+userInfo[5]+"',password= '"+userInfo[6]+"' where username='"+userName+"';";
+            System.out.println(sqlString);
             statement.executeUpdate(sqlString);
             statement.close();
             return true;
