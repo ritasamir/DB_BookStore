@@ -23,7 +23,7 @@
          </Tab>
 
          <Tab fx:id="tab" closable="false" text="History">
-            <fx:include source="/view/Users.fxml" />
+            <fx:include source="/view/History.fxml" />
          </Tab>
 
       </TabPane>

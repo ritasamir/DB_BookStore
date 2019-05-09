@@ -119,15 +119,7 @@ public class PublishersController {
             stage.show();
         }
     }
-    /* Go back to Add New Books Window */
-    public void back(ActionEvent event)throws Exception{
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/ManagerView.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
+
     /* Shows error alert */
     private void showErrorAlert(String alertText){
         Alert alert = new Alert(Alert.AlertType.ERROR);

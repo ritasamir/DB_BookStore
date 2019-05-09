@@ -51,7 +51,8 @@ public class registerController {
             return;
         }else {
             //TODO check if the user is already registered
-            if(user.addNewCustomer(userInfo)){
+            String result = user.addNewCustomer(userInfo);
+            if(result.equals("done")){
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
                 stage.close();
@@ -59,7 +60,13 @@ public class registerController {
                 stage.setScene(scene);
                 stage.show();
             }else{
-                System.out.println("CANN'T INSERT THAT USER");
+                if(result.indexOf("Duplicate") != -1 && result.indexOf("email") != -1) {
+                    showErrorAlert("email already exists");
+                }else if(result.indexOf("Duplicate") != -1 && result.indexOf("username") != -1){
+                        showErrorAlert("username already exists");
+                    }else{
+                        showErrorAlert(result);
+                    }
             }
         }
     }
@@ -117,5 +124,15 @@ public class registerController {
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
         stage.setScene(scene);
         stage.show();
+    }
+    /* Shows error alert */
+    private void showErrorAlert(String alertText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
+        alert.showAndWait();
     }
 }

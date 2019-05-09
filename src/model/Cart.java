@@ -50,18 +50,22 @@ public class Cart {
     }
 
     public boolean insertCreditCard(String username,String cardNo,String date){
+        Statement statement = null;
         try {
             java.sql.Connection con = model.Connection.getInstance();
-            Statement statement = con.createStatement();
+            statement = con.createStatement();
+            startTransaction(statement);
             String sqlString="INSERT INTO book_store.credit_card " +
                     "SELECT * FROM (SELECT '"+username+"','"+cardNo+"','"+date+"') AS tmp " +
                     "WHERE NOT EXISTS ( SELECT * FROM book_store.credit_card WHERE username = '"+username+"' and cardNo='"
             +cardNo+"' and expiry_date = '"+date+"');";
             System.out.println(sqlString);
             statement.executeUpdate(sqlString);
+            commit(statement);
             statement.close();
             return true;
         } catch (Exception ex) {
+            rollback(statement);
             ex.printStackTrace();
             return false;
         }
@@ -87,5 +91,28 @@ public class Cart {
             }
         }
         return null;
+    }
+    public void startTransaction(Statement st){
+        try {
+            st.executeQuery("start transaction");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void commit(Statement st){
+        try {
+            st.executeQuery("commit");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void rollback(Statement st){
+        try {
+            st.executeQuery("rollback");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

@@ -117,24 +117,24 @@ public class CartController {
         state.doAction(Integer.parseInt(user.getUserInfo()[7]),event);
     }
     public void checkOut(ActionEvent event){
-       if(getCreditCardInfo()){
-           for (Map.Entry<Book, StringProperty> entry : Cart.getInstance().compact(Cart.getInstance().getCartItems()).entrySet()) {
-               int newQuantity = Integer.parseInt(entry.getKey().getQuantity()) -Integer.parseInt(entry.getValue().get());
-               control.sellBook(entry.getKey().getISBN(),newQuantity);
-           }
-           cart.setCartItems(new HashMap<Book,StringProperty>());
-           cartTable.setItems(getMasterData(cart.getCartItems()));
-           checkOutBtn.setDisable(true);
-           lblTotalPrice.setText(cart.getTotalPrice());
-       }else{
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setHeaderText(null);
-           alert.setContentText("Invalid Credit Card Information !");
-           String style = getClass().getResource("/sample//sample.css").toExternalForm();
-           DialogPane dialogPane = alert.getDialogPane();
-           dialogPane.getStylesheets().addAll(style);
-           alert.showAndWait();
-       }
+            if (getCreditCardInfo()) {
+                for (Map.Entry<Book, StringProperty> entry : Cart.getInstance().compact(Cart.getInstance().getCartItems()).entrySet()) {
+                    int newQuantity = Integer.parseInt(entry.getKey().getQuantity()) - Integer.parseInt(entry.getValue().get());
+                    control.sellBook(entry.getKey().getISBN(), newQuantity, Integer.parseInt(entry.getValue().get()), User.getInstance().userName);
+                }
+                cart.setCartItems(new HashMap<Book, StringProperty>());
+                cartTable.setItems(getMasterData(cart.getCartItems()));
+                checkOutBtn.setDisable(true);
+                lblTotalPrice.setText(cart.getTotalPrice());
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Credit Card Information !");
+                String style = getClass().getResource("/sample//sample.css").toExternalForm();
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().addAll(style);
+                alert.showAndWait();
+            }
 
     }
     private boolean isInvalid(String text)
@@ -148,86 +148,83 @@ public class CartController {
     }
 
     private boolean getCreditCardInfo() {
-        String style = getClass().getResource("/sample/sample.css").toExternalForm();
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        DialogPane dialogPane = dialog.getDialogPane();
-        dialogPane.getStylesheets().addAll(style);
-        dialog.setTitle("Credit Card Dialog");
-        dialog.setHeaderText("Enter Your Credit Card Information");
-        ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-        TextField creditNo = new TextField();
-        creditNo.setPromptText("Credit Card Number");
-        String pattern = "dd/MM/yyyy";
-        final DatePicker datePicker = new DatePicker();
-        datePicker.setEditable(false);
-        datePicker.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                LocalDate date = datePicker.getValue();
-                Date currdate = new Date();
-                if (datePicker.getEditor()!=null&&currdate.after(java.sql.Date.valueOf(date))) {
-                    System.out.println("invalid date");
-                    error.setText("Invalid Date");
-                }else{
-                    error.setText("");
-                }
-            }
-        });
-        datePicker.setPromptText(pattern.toLowerCase());
-        Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>()
-        {
-            public DateCell call(final DatePicker datePicker)
-            {
-                return new DateCell()
-                {
-                    @Override
-                    public void updateItem(LocalDate item, boolean empty)
-                    {
-                        super.updateItem(item, empty);
-                        DayOfWeek day = DayOfWeek.from(item);
-                        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)
-                        {
-                            this.setTextFill(Color.BLUE);
-                        }
+        try {
+            String style = getClass().getResource("/sample/sample.css").toExternalForm();
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
+            DialogPane dialogPane = dialog.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
+            dialog.setTitle("Credit Card Dialog");
+            dialog.setHeaderText("Enter Your Credit Card Information");
+            ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+            TextField creditNo = new TextField();
+            creditNo.setPromptText("Credit Card Number");
+            String pattern = "dd/MM/yyyy";
+            final DatePicker datePicker = new DatePicker();
+            datePicker.setEditable(false);
+            datePicker.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    LocalDate date = datePicker.getValue();
+                    Date currdate = new Date();
+                    if (datePicker.getEditor() != null && currdate.after(java.sql.Date.valueOf(date))) {
+                        System.out.println("invalid date");
+                        error.setText("Invalid Date");
+                    } else {
+                        error.setText("");
                     }
-                };
-            }
-        };
+                }
+            });
+            datePicker.setPromptText(pattern.toLowerCase());
+            Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+                public DateCell call(final DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate item, boolean empty) {
+                            super.updateItem(item, empty);
+                            DayOfWeek day = DayOfWeek.from(item);
+                            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                                this.setTextFill(Color.BLUE);
+                            }
+                        }
+                    };
+                }
+            };
 
-        datePicker.setDayCellFactory(dayCellFactory);
-        Label selection = new Label("Expiry Date:");
-        error = new Label("");
-        error.setPrefSize(100,50);
-        error.setTextFill(Color.RED);
-        grid.add(new Label("Credit Card Number:"), 0, 0);
-        grid.add(creditNo, 1, 0);
-        grid.add(selection, 0, 1);
-        grid.add(datePicker, 1, 1);
-        grid.add(error,2,1);
-        Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
-        confirmButton.setDisable(true);
-        creditNo.textProperty().addListener((observable, oldValue, newValue) -> {
-            confirmButton.setDisable(newValue.trim().isEmpty());
-        });
-        BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> isInvalid(creditNo.getText()), creditNo.textProperty());
-        confirmButton.disableProperty().bind(isInvalid);
-        dialog.getDialogPane().setContent(grid);
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-        grid.getStylesheets().addAll(style);
-       if (result.isPresent()) {
-           // System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
-           User user= User.getInstance();
-          if(datePicker.getValue() != null && cart.insertCreditCard(user.userName,creditNo.getText(),datePicker.getValue().toString()))
-              return true;
-       }
-       return false;
+            datePicker.setDayCellFactory(dayCellFactory);
+            Label selection = new Label("Expiry Date:");
+            error = new Label("");
+            error.setPrefSize(100, 50);
+            error.setTextFill(Color.RED);
+            grid.add(new Label("Credit Card Number:"), 0, 0);
+            grid.add(creditNo, 1, 0);
+            grid.add(selection, 0, 1);
+            grid.add(datePicker, 1, 1);
+            grid.add(error, 2, 1);
+            Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
+            confirmButton.setDisable(true);
+            creditNo.textProperty().addListener((observable, oldValue, newValue) -> {
+                confirmButton.setDisable(newValue.trim().isEmpty());
+            });
+            BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> isInvalid(creditNo.getText()), creditNo.textProperty());
+            confirmButton.disableProperty().bind(isInvalid);
+            dialog.getDialogPane().setContent(grid);
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+            grid.getStylesheets().addAll(style);
+            if (result.isPresent()) {
+                // System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
+                User user = User.getInstance();
+                if (datePicker.getValue() != null && cart.insertCreditCard(user.userName, creditNo.getText(), datePicker.getValue().toString()))
+                    return true;
+            }
+            return false;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
  class removeFCartBtn extends TableCell<Pair<Book,StringProperty>, Boolean>  {

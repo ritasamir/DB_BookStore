@@ -203,15 +203,6 @@ public class UsersController {
         managersTable.setItems(sortedDatam);
     }
 
-    /* Go back to Add New Books Window */
-    public void back(ActionEvent event)throws Exception{
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/ManagerView.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
 
     public void changeCustomer(ActionEvent event)throws Exception{
         Users selectedOrder = usersTable.getSelectionModel().getSelectedItem();

@@ -12,8 +12,11 @@ import java.util.Date;
 
 public class Manager {
     public static String addBooks(String[] bookInfo,Set<String> authorsNames) {
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
+            st = conn.createStatement();
+            startTransaction(st);
             String query = "insert into book_store." + "book" + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             // create the mysql insert preparedstatement
@@ -31,10 +34,13 @@ public class Manager {
             preparedStmt.execute();
             String authorStatus = addAuthors(bookInfo[0],authorsNames);
             if(authorStatus != "Authors added successfully"){
+                rollback(st);
                 return "Book added successfully but " + authorStatus;
             }
+            commit(st);
             return "Book added successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
@@ -42,8 +48,11 @@ public class Manager {
 
 
   public static String addPublisher(String[] publisherInfo){
+          Statement st = null;
       try {
           java.sql.Connection conn = Connection.getInstance();
+          st = conn.createStatement();
+          startTransaction(st);
           String query = "insert into book_store." + "publisher" + " values (?, ?, ?)";
 
           // create the mysql insert preparedstatement
@@ -54,16 +63,20 @@ public class Manager {
 
           // execute the preparedstatement
           preparedStmt.execute();
-
+          commit(st);
           return "Publisher added successfully";
       } catch (Exception e) {
+          rollback(st);
           String error = e.getMessage();
           return error;
       }
   }
     public static String addOrder(String[] orderInfo){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
+            st = conn.createStatement();
+            startTransaction(st);
             String query = "insert into book_store." + "book_order(ISBN,quantity,timestamp)" + " values (?, ?, ?)";
             // create the mysql insert preparedstatement
             PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -75,16 +88,20 @@ public class Manager {
             preparedStmt.setString(3,ts.toString()); //phone
             // execute the preparedstatement
             preparedStmt.execute();
+            commit(st);
             return "Order added successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
     public static String addAuthors(String ISBN,Set<String> authorsNames){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-
+            st = conn.createStatement();
+            startTransaction(st);
                 for (String author: authorsNames) {
                     String query = "insert into book_store." + "author" + " values (?, ?)";
                     // create the mysql insert preparedstatement
@@ -95,19 +112,22 @@ public class Manager {
                     preparedStmt.execute();
                 }
 
-
+            commit(st);
             return "Authors added successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
 
     public static ObservableList<Book> getBooks(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
             ObservableList<Book> books = FXCollections.observableArrayList();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             ResultSet rs = st.executeQuery("Select * from book");
             while (rs.next()) {
                 String[] book_info = new String[8];
@@ -121,18 +141,22 @@ public class Manager {
                 /*int minimumQuantity*/ book_info[7] = rs.getString("Threshold");
                 books.add(new Book(book_info));
             }
+            commit(st);
             return books;
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return null;
         }
     }
 
     public static ObservableList<Publisher> getPublishers(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
             ObservableList<Publisher> publishers = FXCollections.observableArrayList();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             ResultSet rs = st.executeQuery("Select * from publisher");
             while (rs.next()) {
                 String name = rs.getString("name");
@@ -140,36 +164,44 @@ public class Manager {
                 String phone = rs.getString("phone");
                 publishers.add(new Publisher(name,address,phone));
             }
+            commit(st);
             return publishers;
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return null;
         }
     }
 
     public static ObservableList<Author> getAuthors(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
             ObservableList<Author> authors = FXCollections.observableArrayList();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             ResultSet rs = st.executeQuery("Select * from Author");
             while (rs.next()) {
                 String ISBN = rs.getString("ISBN");
                 String name=  rs.getString("author_name");
                 authors.add(new Author(ISBN,name));
             }
+            commit(st);
             return authors;
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return null;
         }
     }
 
     public static ObservableList<Order> getOrders(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
             ObservableList<Order> orders = FXCollections.observableArrayList();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             ResultSet rs = st.executeQuery("Select * from book_order");
             while (rs.next()) {
                 String id = rs.getString("order_id");
@@ -178,118 +210,176 @@ public class Manager {
                 String timestamp = rs.getString("timestamp");
                 orders.add(new Order(id,ISBN,quantity,timestamp));
             }
+            commit(st);
             return orders;
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return null;
         }
     }
-
-    public static String deleteOrder(String order_id){
+    public static ObservableList<History> getHistory(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            ObservableList<History> history = FXCollections.observableArrayList();
+            st = conn.createStatement();
+            startTransaction(st);
+            ResultSet rs = st.executeQuery("Select * from user_history");
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String id = rs.getString("order_id");
+                String ISBN=  rs.getString("ISBN");
+                String quantity = rs.getString("quantity");
+                String timestamp = rs.getString("timestamp");
+                history.add(new History(username,id,ISBN,quantity,timestamp));
+            }
+            commit(st);
+            return history;
+        } catch (Exception e) {
+            rollback(st);
+            String error = e.getMessage();
+            return null;
+        }
+    }
+    public static String deleteOrder(String order_id){
+        Statement st = null;
+        try {
+            java.sql.Connection conn = Connection.getInstance();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("DELETE FROM book_Store.book_order WHERE order_id=" + order_id);
-
+            commit(st);
             return "Order deleted successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
 
     public static String deleteAuthor(String ISBN,String name){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("DELETE FROM book_Store.author WHERE ISBN=" + ISBN + " AND author_name =\"" + name +"\"");
+            commit(st);
             return "Author deleted successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
     public static String deletePublisher(String name){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("DELETE FROM book_Store.publisher WHERE name =\"" + name +"\"");
+            commit(st);
             return "Publisher deleted successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
     public static String updateBooks(String ISBN,String[] book_info){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("update book set ISBN = \""+book_info[0]+
                     "\", Title = \""+ book_info[1]+"\" , Publisher = \""+ book_info[2]
                     +"\" , Publication_year = \""+ book_info[3]
                     +"\", price = \""+book_info[4]+"\", Category = \""+book_info[5]+
                     "\", Number_Of_Copies = "+book_info[6]+", Threshold = "+book_info[7] +" where ISBN = \""+ISBN+"\"");
+            commit(st);
             return "Book updated successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
 
     public static String updatePublisher(String name,String[] publisher_info){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("update publisher set Name = \""+publisher_info[0]+
                     "\", address = \""+ publisher_info[1]+"\", Phone = \""+ publisher_info[2]
                     +"\" where name = \""+name+"\"");
+            commit(st);
             return "Publisher updated successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
     public static String deleteUser(String userName){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("DELETE FROM book_Store.user WHERE username=\"" + userName +"\"");
+            commit(st);
             return "User deleted successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
 
     public static String deleteBook(String ISBN){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("DELETE FROM book_Store.book WHERE ISBN=\"" + ISBN +"\"");
+            commit(st);
             return "Book deleted successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
 
     public static String changeToManager(String userName){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             st.executeUpdate("UPDATE user SET is_manager = 1 WHERE username = \"" + userName +"\"");
+            commit(st);
             return "customer updated successfully";
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return error;
         }
     }
     public static ObservableList<ObservableList<Users>> getUsers(){
+        Statement st = null;
         try {
             java.sql.Connection conn = Connection.getInstance();
             ObservableList<Users> customers = FXCollections.observableArrayList();
             ObservableList<Users> managers = FXCollections.observableArrayList();
-            Statement st = conn.createStatement();
+            st = conn.createStatement();
+            startTransaction(st);
             ResultSet rs = st.executeQuery("Select * from user");
 
             while (rs.next()) {
@@ -310,10 +400,37 @@ public class Manager {
             ObservableList<ObservableList<Users>> users = FXCollections.observableArrayList();
             users.add(customers);
             users.add(managers);
+            commit(st);
             return users;
         } catch (Exception e) {
+            rollback(st);
             String error = e.getMessage();
             return null;
         }
     }
+
+    public static void startTransaction(Statement st){
+        try {
+            st.executeQuery("start transaction");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void commit(Statement st){
+        try {
+            st.executeQuery("commit");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void rollback(Statement st){
+        try {
+            st.executeQuery("rollback");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
 }

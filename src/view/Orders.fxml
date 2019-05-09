@@ -14,7 +14,6 @@
       <Button layoutX="956.0" layoutY="61.0" mnemonicParsing="false" onAction="#confirmOrder" text="Confirm Order" />
       <TextField fx:id="filterFieldISBN" layoutX="198.0" layoutY="61.0" prefHeight="31.0" prefWidth="135.0" promptText="Filter by ISBN" />
       <TextField fx:id="filterFieldQuantity" layoutX="351.0" layoutY="61.0" prefHeight="31.0" prefWidth="135.0" promptText="Filter by quantity" />
-      <Button layoutX="31.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="Back" />
           <TableView fx:id="tableView" layoutX="30.0" layoutY="109.0" prefHeight="539.0" prefWidth="1037.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="109.0">
               <columns>
                   <TableColumn fx:id="idCol" prefWidth="93.0" text="Order ID" />

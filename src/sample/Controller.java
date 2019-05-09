@@ -6,13 +6,16 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class Controller {
-    public void sellBook(String iSBN, int newQuantity) {
+    public void sellBook(String iSBN, int newQuantity,int quantity,String user) {
         try {
             java.sql.Connection con = model.Connection.getInstance();
             Statement st = con.createStatement();
             String sqlCommand ="UPDATE book SET Number_Of_Copies = "+newQuantity+" WHERE ISBN = \""+iSBN+"\";";
+            String historyCommand = "insert into user_history(username,ISBN,quantity,timestamp) values(\""+user+"\",\""+iSBN+"\","+quantity+",now())";
             PreparedStatement pstmt = con.prepareStatement(sqlCommand);
+            PreparedStatement history = con.prepareStatement(historyCommand);
             pstmt.executeUpdate();
+            history.executeUpdate();
             st.close();
         } catch (Exception ex) {
             ex.printStackTrace();

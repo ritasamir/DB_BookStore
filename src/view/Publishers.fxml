@@ -23,7 +23,6 @@
           </TableView>
       <Button layoutX="800.0" layoutY="59.0" mnemonicParsing="false" onAction="#deletePublisher" text="Remove Publisher" />
       <Button layoutX="943.0" layoutY="59.0" mnemonicParsing="false" onAction="#modifyPublisher" text="Modify Publisher" />
-      <Button layoutX="47.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="Back" />
     </children>
     <stylesheets>
         <URL value="@/sample/sample.css" />
