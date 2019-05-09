@@ -110,4 +110,12 @@ public class registerController {
 
         return true;
     }
+    public void back(ActionEvent event)throws Exception{
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
 }

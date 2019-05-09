@@ -6,6 +6,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+
 
 <AnchorPane prefHeight="330.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="">
     <children>
@@ -34,4 +38,7 @@
             <Font size="18.0" />
          </font></Button>
     </children>
+    <stylesheets>
+        <URL value="@sample.css" />
+    </stylesheets>
 </AnchorPane>

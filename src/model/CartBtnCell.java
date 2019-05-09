@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import java.util.Optional;
 
 public class CartBtnCell extends TableCell<Book, Boolean> {
-    final  Button cellButton = new Button("+");
+    final  Button cellButton = new Button("Add To Cart");
     Cart cart = Cart.getInstance();
 
     public CartBtnCell(final TableView tblView){

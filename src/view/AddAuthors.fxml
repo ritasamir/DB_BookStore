@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import java.net.URL?>
 
 <AnchorPane prefHeight="319.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.AddAuthorsController">
     <Label layoutX="46.0" layoutY="120.0" text="Authors" />
@@ -21,5 +22,7 @@
    <Label layoutX="56.0" layoutY="72.0" text="ISBN" />
    <Button layoutX="179.0" layoutY="261.0" mnemonicParsing="false" onAction="#submitAuthor" text="Add Author" />
    <Button layoutX="21.0" layoutY="20.0" mnemonicParsing="false" onAction="#back" text="Back" />
-
+    <stylesheets>
+        <URL value="@/sample/sample.css" />
+    </stylesheets>
 </AnchorPane>

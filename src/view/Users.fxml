@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -9,9 +10,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="686.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UsersController">
+<AnchorPane prefHeight="500.0" prefWidth="1104.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UsersController">
    <children>
-      <TableView fx:id="usersTable" layoutX="30.0" layoutY="147.0" prefHeight="200.0" prefWidth="747.0">
+      <TableView fx:id="usersTable" layoutX="169.0" layoutY="117.0" prefHeight="200.0" prefWidth="747.0">
         <columns>
           <TableColumn fx:id="usernameccol" prefWidth="75.0" text="Username" />
           <TableColumn fx:id="emailccol" prefWidth="75.0" text="Email" />
@@ -24,7 +25,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="managersTable" layoutX="30.0" layoutY="466.0" prefHeight="200.0" prefWidth="747.0">
+      <TableView fx:id="managersTable" layoutX="169.0" layoutY="409.0" prefHeight="164.0" prefWidth="747.0">
         <columns>
             <TableColumn fx:id="usernamemcol" prefWidth="75.0" text="Username" />
             <TableColumn fx:id="emailmcol" prefWidth="75.0" text="Email" />
@@ -37,23 +38,26 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="filteremailc" layoutX="159.0" layoutY="97.0" prefHeight="31.0" prefWidth="111.0" promptText="Email" />
-      <TextField fx:id="filterusernamec" layoutX="32.0" layoutY="97.0" prefHeight="31.0" prefWidth="111.0" promptText="UserName" />
-      <TextField fx:id="filterfirstnamec" layoutX="283.0" layoutY="97.0" prefHeight="31.0" prefWidth="111.0" promptText="First Name" />
-      <TextField fx:id="filtersecondnamec" layoutX="409.0" layoutY="97.0" prefHeight="31.0" prefWidth="111.0" promptText="Last Name" />
-      <TextField fx:id="filteremailm" layoutX="159.0" layoutY="410.0" prefHeight="31.0" prefWidth="111.0" promptText="Email" />
-      <TextField fx:id="filterusernamem" layoutX="32.0" layoutY="410.0" prefHeight="31.0" prefWidth="111.0" promptText="Username" />
-      <TextField fx:id="filterfirstnamem" layoutX="283.0" layoutY="410.0" prefHeight="31.0" prefWidth="111.0" promptText="First Name" />
-      <TextField fx:id="filtersecondnamem" layoutX="409.0" layoutY="410.0" prefHeight="31.0" prefWidth="111.0" promptText="Last Name" />
-      <Label layoutX="34.0" layoutY="381.0" text="Managers" textFill="#141414" />
+      <TextField fx:id="filteremailc" layoutX="236.0" layoutY="67.0" prefHeight="31.0" prefWidth="111.0" promptText="Email" />
+      <TextField fx:id="filterusernamec" layoutX="103.0" layoutY="67.0" prefHeight="31.0" prefWidth="111.0" promptText="UserName" />
+      <TextField fx:id="filterfirstnamec" layoutX="370.0" layoutY="67.0" prefHeight="31.0" prefWidth="111.0" promptText="First Name" />
+      <TextField fx:id="filtersecondnamec" layoutX="507.0" layoutY="67.0" prefHeight="31.0" prefWidth="111.0" promptText="Last Name" />
+      <TextField fx:id="filteremailm" layoutX="315.0" layoutY="362.0" prefHeight="31.0" prefWidth="111.0" promptText="Email" />
+      <TextField fx:id="filterusernamem" layoutX="181.0" layoutY="362.0" prefHeight="31.0" prefWidth="111.0" promptText="Username" />
+      <TextField fx:id="filterfirstnamem" layoutX="452.0" layoutY="362.0" prefHeight="31.0" prefWidth="111.0" promptText="First Name" />
+      <TextField fx:id="filtersecondnamem" layoutX="587.0" layoutY="362.0" prefHeight="31.0" prefWidth="111.0" promptText="Last Name" />
+      <Label fx:id="headTitle" layoutX="55.0" layoutY="372.0" text="Managers" textFill="#141414" />
       <Button layoutX="32.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" text="Back" />
-      <Label layoutX="32.0" layoutY="72.0" text="Customers" textFill="#282727">
+      <Label layoutX="21.0" layoutY="70.0" text="Customers" textFill="#282727">
          <font>
             <Font name="Bookshelf Symbol 7" size="15.0" />
          </font></Label>
-      <Button layoutX="535.0" layoutY="97.0" mnemonicParsing="false" onAction="#changeCustomer" text="Change To Manager" />
-      <Button layoutX="701.0" layoutY="97.0" mnemonicParsing="false" onAction="#deleteUser" text="Remove" />
-      <Button layoutX="701.0" layoutY="410.0" mnemonicParsing="false" onAction="#deleteManager" text="Remove" />
-      <Line endX="720.0" layoutX="238.0" layoutY="366.0" startX="-100.0" stroke="#00000074" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="365.5" />
+      <Button layoutX="668.0" layoutY="67.0" mnemonicParsing="false" onAction="#changeCustomer" text="Change To Manager" />
+      <Button layoutX="843.0" layoutY="67.0" mnemonicParsing="false" onAction="#deleteUser" text="Remove" />
+      <Button layoutX="843.0" layoutY="362.0" mnemonicParsing="false" onAction="#deleteManager" text="Remove" />
+      <Line endX="1000.0" layoutX="238.0" startX="-100.0" stroke="#00000074" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="340.0" />
    </children>
+    <stylesheets>
+        <URL value="@/sample/sample.css" />
+    </stylesheets>
 </AnchorPane>

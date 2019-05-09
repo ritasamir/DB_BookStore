@@ -223,7 +223,7 @@ public class CartController {
     }
 }
  class removeFCartBtn extends TableCell<Pair<Book,StringProperty>, Boolean>  {
-    final Button cellButton = new Button("-");
+    final Button cellButton = new Button("Remove");
     Cart cart = Cart.getInstance();
      HashMap<Book, StringProperty> cartItems;
     CartController cartController;

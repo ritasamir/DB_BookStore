@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane prefHeight="400.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.ManagerViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1104.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.ManagerViewController">
    <children>
-      <Button layoutX="26.0" layoutY="26.0" mnemonicParsing="false" onAction="#modifyBooks" text="Books" />
-      <Button layoutX="109.0" layoutY="26.0" mnemonicParsing="false" onAction="#modifyPublishers" text="Publishers" />
-      <Button layoutX="222.0" layoutY="26.0" mnemonicParsing="false" onAction="#orders" text="Orders" />
-      <Button layoutX="305.0" layoutY="26.0" mnemonicParsing="false" onAction="#users" text="Users" />
-      <Button layoutX="381.0" layoutY="26.0" mnemonicParsing="false" text="History" />
+      <TabPane fx:id="tabPane">
+         <Tab fx:id="tab" closable="false" text="Books">
+            <fx:include source="/view/Books.fxml" />
+         </Tab>
+         <Tab fx:id="tab" closable="false" text="Publishers">
+            <fx:include source="/view/Publishers.fxml" />
+         </Tab>
+         <Tab fx:id="tab" closable="false" text="Orders">
+            <fx:include source="/view/Orders.fxml" />
+         </Tab>
+         <Tab fx:id="tab" closable="false" text="Users">
+            <fx:include source="/view/Users.fxml" />
+         </Tab>
+
+         <Tab fx:id="tab" closable="false" text="History">
+            <fx:include source="/view/Users.fxml" />
+         </Tab>
+
+      </TabPane>
+      <Line endX="1100.0" endY="52.0" startY="52.0" />
+<!--      <Button layoutX="26.0" layoutY="26.0" mnemonicParsing="false" onAction="#modifyBooks" text="Books" />-->
+<!--      <Button layoutX="109.0" layoutY="26.0" mnemonicParsing="false" onAction="#modifyPublishers" text="Publishers" />-->
+<!--      <Button layoutX="222.0" layoutY="26.0" mnemonicParsing="false" onAction="#orders" text="Orders" />-->
+<!--      <Button layoutX="305.0" layoutY="26.0" mnemonicParsing="false" onAction="#users" text="Users" />-->
+<!--      <Button layoutX="381.0" layoutY="26.0" mnemonicParsing="false" text="History" />-->
    </children>
+   <stylesheets>
+      <URL value="@/sample/sample.css" />
+   </stylesheets>
 </AnchorPane>

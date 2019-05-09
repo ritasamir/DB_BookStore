@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,24 +11,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="635.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserViewController">
+<AnchorPane prefHeight="686.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserViewController">
    <children>
-      <Button fx:id="logOutbtn" layoutX="491.0" layoutY="27.0" mnemonicParsing="false" onAction="#logOut" text="Log Out">
+      <Button fx:id="logOutbtn" layoutX="719.0" layoutY="27.0" mnemonicParsing="false" onAction="#logOut" prefHeight="39.0" prefWidth="67.0" text="Log Out">
          <font>
-            <Font size="18.0" />
+            <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="370.0" layoutY="27.0" mnemonicParsing="false" onAction="#editProfile" text="Edit profile">
+      <Button layoutX="703.0" layoutY="92.0" mnemonicParsing="false" onAction="#editProfile" prefHeight="39.0" prefWidth="87.0" text="Edit profile">
          <font>
-            <Font size="18.0" />
+            <Font size="13.0" />
          </font>
       </Button>
-      <Button layoutX="254.0" layoutY="27.0" mnemonicParsing="false" onAction="#viewCart" text="Cart">
+      <Button layoutX="621.0" layoutY="92.0" mnemonicParsing="false" onAction="#viewCart" text="Cart">
          <font>
-            <Font size="18.0" />
+            <Font size="13.0" />
          </font>
       </Button>
-       <TableView fx:id="bookTable" prefHeight="-1.0" prefWidth="-1.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
+       <TableView fx:id="bookTable" layoutX="27.0" prefHeight="491.0" prefWidth="747.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="150.0">
            <columns>
                <TableColumn fx:id="ISBNColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="120.0" text="ISBN" />
                <TableColumn fx:id="titleColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="120.0" text="Book Title" />
@@ -40,14 +41,18 @@
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
            </columnResizePolicy>
        </TableView>
-       <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="78.0" prefHeight="63.0" prefWidth="331.0" spacing="5.0">
+       <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="92.0" prefHeight="49.0" prefWidth="413.0" spacing="5.0">
            <children>
                <Label text="Search Table:" />
-               <TextField fx:id="searchField" prefHeight="25.0" prefWidth="229.0" HBox.hgrow="ALWAYS">
+               <TextField fx:id="searchField" prefHeight="39.0" prefWidth="251.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin></TextField>
            </children>
        </HBox>
+      <Label fx:id="headTitle" layoutX="85.0" layoutY="38.0" text="Welcome   ^^" />
    </children>
+    <stylesheets>
+        <URL value="@/sample/sample.css" />
+    </stylesheets>
 </AnchorPane>
