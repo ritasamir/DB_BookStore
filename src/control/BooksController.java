@@ -257,7 +257,8 @@ public class BooksController {
             alert.setHeaderText(null);
             alert.setContentText("Book deleted successfully");
             alert.showAndWait();
-            initialize();
+            books = Manager.getBooks();
+            tableViewBooks.setItems(books);
         }else{
             showErrorAlert(result);
         }
