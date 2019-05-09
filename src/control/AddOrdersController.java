@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Manager;
@@ -34,6 +35,9 @@ public class AddOrdersController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText(null);
                 alert.setContentText("Order added successfully");
+                String style = getClass().getResource("/sample//sample.css").toExternalForm();
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().addAll(style);
                 alert.showAndWait();
             }else {
                 showErrorAlert(result);
@@ -71,6 +75,9 @@ public class AddOrdersController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         alert.showAndWait();
     }
 }

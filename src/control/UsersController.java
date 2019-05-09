@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 
@@ -223,6 +220,9 @@ public class UsersController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("Customer updated successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
             initialize();
         }else{
@@ -237,6 +237,9 @@ public class UsersController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("User deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
             initialize();
         }else{
@@ -250,6 +253,9 @@ public class UsersController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("User deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
             initialize();
         }else{
@@ -262,6 +268,9 @@ public class UsersController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         alert.showAndWait();
     }
 

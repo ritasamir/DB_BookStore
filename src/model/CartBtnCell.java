@@ -31,7 +31,9 @@ public class CartBtnCell extends TableCell<Book, Boolean> {
         dialog.setTitle("Order Quantity");
         dialog.setHeaderText("Please enter your needed quantity");
         dialog.setContentText("Quantity:");
-
+        String style = getClass().getResource("/sample/sample.css").toExternalForm();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         Optional<String> result = dialog.showAndWait();
               Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         TextField inputField = dialog.getEditor();

@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Book;
 import model.Manager;
@@ -57,6 +54,9 @@ public class ModifyBooksController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText(null);
                 alert.setContentText("Book updated successfully");
+                String style = getClass().getResource("/sample//sample.css").toExternalForm();
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().addAll(style);
                 alert.showAndWait();
             }else {
                 showErrorAlert(result);
@@ -130,6 +130,9 @@ public class ModifyBooksController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         alert.showAndWait();
     }
     /* Set Selected Item Handler for Art Menu Item */

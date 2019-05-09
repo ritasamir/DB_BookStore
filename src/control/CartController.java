@@ -127,7 +127,12 @@ public class CartController {
            checkOutBtn.setDisable(true);
            lblTotalPrice.setText(cart.getTotalPrice());
        }else{
-           Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Credit Card Information !", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setHeaderText(null);
+           alert.setContentText("Invalid Credit Card Information !");
+           String style = getClass().getResource("/sample//sample.css").toExternalForm();
+           DialogPane dialogPane = alert.getDialogPane();
+           dialogPane.getStylesheets().addAll(style);
            alert.showAndWait();
        }
 
@@ -143,7 +148,10 @@ public class CartController {
     }
 
     private boolean getCreditCardInfo() {
+        String style = getClass().getResource("/sample/sample.css").toExternalForm();
         Dialog<Pair<String, String>> dialog = new Dialog<>();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         dialog.setTitle("Credit Card Dialog");
         dialog.setHeaderText("Enter Your Credit Card Information");
         ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
@@ -212,7 +220,7 @@ public class CartController {
         confirmButton.disableProperty().bind(isInvalid);
         dialog.getDialogPane().setContent(grid);
         Optional<Pair<String, String>> result = dialog.showAndWait();
-
+        grid.getStylesheets().addAll(style);
        if (result.isPresent()) {
            // System.out.println("creditNo=" + creditNo.getText() + ", Expiry Date=" + datePicker.getValue());
            User user= User.getInstance();

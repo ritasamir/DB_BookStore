@@ -1,5 +1,6 @@
 package control;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import model.Manager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,6 +37,9 @@ public class AddPublishersController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText(null);
                 alert.setContentText("Publisher added successfully");
+                String style = getClass().getResource("/sample//sample.css").toExternalForm();
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().addAll(style);
                 alert.showAndWait();
             }else {
                 showErrorAlert(result);
@@ -78,6 +82,9 @@ public class AddPublishersController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         alert.showAndWait();
     }
 }

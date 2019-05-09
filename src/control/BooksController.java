@@ -256,6 +256,9 @@ public class BooksController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("Book deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
             books = Manager.getBooks();
             tableViewBooks.setItems(books);
@@ -287,6 +290,9 @@ public class BooksController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setContentText("Author deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
             initialize();
         }else{
@@ -298,6 +304,9 @@ public class BooksController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
         alert.showAndWait();
     }
     public void logOut(ActionEvent event) throws IOException {
