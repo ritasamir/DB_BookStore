@@ -106,7 +106,12 @@ public class OrdersController {
             DialogPane dialogPane = alert.getDialogPane();
             dialogPane.getStylesheets().addAll(style);
             alert.showAndWait();
-            initialize();
+            Node node = (Node) event.getSource();
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.close();
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/ManagerView.fxml")));
+            stage.setScene(scene);
+            stage.show();
         }else{
             showErrorAlert(result);
         }
