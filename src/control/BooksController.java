@@ -100,6 +100,116 @@ public class BooksController {
                 });
         tableViewBooks.getColumns().add(col_action);
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        setTable();
+
+    }
+    public void addNewBooks(ActionEvent event)throws Exception{
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/AddBooks.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+    /* Change to Add Authors Window */
+    public void addAuthorWindow(ActionEvent event)throws Exception{
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/AddAuthors.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void deleteBook(ActionEvent event)throws Exception{
+        Book selectedBook = tableViewBooks.getSelectionModel().getSelectedItem();
+        String result = Manager.deleteBook(selectedBook.getISBN());
+        if(result.equals("Book deleted successfully")){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Book deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
+            alert.showAndWait();
+            setTable();
+        }else{
+            showErrorAlert(result);
+        }
+    }
+    public void modifyBook(ActionEvent event)throws Exception{
+        Book selectedBook = tableViewBooks.getSelectionModel().getSelectedItem();
+        if(selectedBook== null){
+            showErrorAlert("Please choose a book");
+        }else {
+            Node node = (Node) event.getSource();
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ModifyBooks.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            ModifyBooksController controller = fxmlLoader.<ModifyBooksController>getController();
+            controller.modifyBooks(selectedBook);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
+    public void deleteAuthor(ActionEvent event)throws Exception{
+        Author selectedAuthor = authorstable.getSelectionModel().getSelectedItem();
+        String result = Manager.deleteAuthor(selectedAuthor.getISBN(),selectedAuthor.getName());
+        if(result.equals("Author deleted successfully")){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Author deleted successfully");
+            String style = getClass().getResource("/sample//sample.css").toExternalForm();
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().addAll(style);
+            alert.showAndWait();
+            setTable();
+        }else{
+            showErrorAlert(result);
+        }
+    }
+    /* Shows error alert */
+    private void showErrorAlert(String alertText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(alertText);
+        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().addAll(style);
+        alert.showAndWait();
+    }
+    public void logOut(ActionEvent event) throws IOException {
+        Cart cart = Cart.getInstance();
+        cart.setCartItems(new HashMap<Book, StringProperty>());
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void editProfile(ActionEvent event) throws IOException {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/editProfile.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void viewCart(ActionEvent event) throws IOException {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/cart.fxml")));
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void setTable(){
         books = Manager.getBooks();
         FilteredList<Book> filteredData = new FilteredList<>(books, p -> true);
 
@@ -222,112 +332,6 @@ public class BooksController {
 
         // 5. Add sorted (and filtered) data to the table.
         authorstable.setItems(sortedAuthorData);
-    }
-    public void addNewBooks(ActionEvent event)throws Exception{
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/AddBooks.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
-    /* Change to Add Authors Window */
-    public void addAuthorWindow(ActionEvent event)throws Exception{
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/AddAuthors.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void deleteBook(ActionEvent event)throws Exception{
-        Book selectedBook = tableViewBooks.getSelectionModel().getSelectedItem();
-        String result = Manager.deleteBook(selectedBook.getISBN());
-        if(result.equals("Book deleted successfully")){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Book deleted successfully");
-            String style = getClass().getResource("/sample//sample.css").toExternalForm();
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.getStylesheets().addAll(style);
-            alert.showAndWait();
-            books = Manager.getBooks();
-            tableViewBooks.setItems(books);
-        }else{
-            showErrorAlert(result);
-        }
-    }
-    public void modifyBook(ActionEvent event)throws Exception{
-        Book selectedBook = tableViewBooks.getSelectionModel().getSelectedItem();
-        if(selectedBook== null){
-            showErrorAlert("Please choose a book");
-        }else {
-            Node node = (Node) event.getSource();
-            Stage stage = (Stage) node.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ModifyBooks.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            ModifyBooksController controller = fxmlLoader.<ModifyBooksController>getController();
-            controller.modifyBooks(selectedBook);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-    }
-    public void deleteAuthor(ActionEvent event)throws Exception{
-        Author selectedAuthor = authorstable.getSelectionModel().getSelectedItem();
-        String result = Manager.deleteAuthor(selectedAuthor.getISBN(),selectedAuthor.getName());
-        if(result.equals("Author deleted successfully")){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Author deleted successfully");
-            String style = getClass().getResource("/sample//sample.css").toExternalForm();
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.getStylesheets().addAll(style);
-            alert.showAndWait();
-            initialize();
-        }else{
-            showErrorAlert(result);
-        }
-    }
-    /* Shows error alert */
-    private void showErrorAlert(String alertText){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setContentText(alertText);
-        String style = getClass().getResource("/sample//sample.css").toExternalForm();
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().addAll(style);
-        alert.showAndWait();
-    }
-    public void logOut(ActionEvent event) throws IOException {
-        Cart cart = Cart.getInstance();
-        cart.setCartItems(new HashMap<Book, StringProperty>());
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void editProfile(ActionEvent event) throws IOException {
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/editProfile.fxml")));
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void viewCart(ActionEvent event) throws IOException {
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/cart.fxml")));
-        stage.setScene(scene);
-        stage.show();
     }
 }
 
