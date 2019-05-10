@@ -20,12 +20,12 @@ public class User {
             st = con.createStatement();
             startTransaction(st);
             String sqlCommand ="SELECT * FROM book_store.user where username = '"+userName+"';";
-            System.out.println(sqlCommand);
+            //System.out.println(sqlCommand);
             ResultSet rs = st.executeQuery(sqlCommand);
             while (rs.next()) {
                 for(int j=0;j<8;j++) {
                     userInfo[j] = rs.getString(j + 1);
-                    System.out.println(userInfo[j]);
+                   // System.out.println(userInfo[j]);
                 }
             }
             commit(st);

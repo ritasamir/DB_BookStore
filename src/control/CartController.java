@@ -120,8 +120,18 @@ public class CartController {
             if (getCreditCardInfo()) {
                 for (Map.Entry<Book, StringProperty> entry : Cart.getInstance().compact(Cart.getInstance().getCartItems()).entrySet()) {
                     int newQuantity = Integer.parseInt(entry.getKey().getQuantity()) - Integer.parseInt(entry.getValue().get());
-                    control.sellBook(entry.getKey().getISBN(), newQuantity, Integer.parseInt(entry.getValue().get()), User.getInstance().userName);
-                }
+                    if(newQuantity<0){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText(null);
+                        alert.setContentText("No quantity available for your order!\nYour order will be cancelled!!");
+                        String style = getClass().getResource("/sample//sample.css").toExternalForm();
+                        DialogPane dialogPane = alert.getDialogPane();
+                        dialogPane.getStylesheets().addAll(style);
+                        alert.showAndWait();
+                    }else {
+                        control.sellBook(entry.getKey().getISBN(), newQuantity, Integer.parseInt(entry.getValue().get()), User.getInstance().userName);
+                    }
+                    }
                 cart.setCartItems(new HashMap<Book, StringProperty>());
                 cartTable.setItems(getMasterData(cart.getCartItems()));
                 checkOutBtn.setDisable(true);

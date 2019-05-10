@@ -56,7 +56,7 @@ public class AddBooksController {
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/Books.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/ManagerView.fxml")));
         stage.setScene(scene);
         stage.show();
     }
